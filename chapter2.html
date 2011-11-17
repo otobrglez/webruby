@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+
+<h2>Creating a simple webpage using HTML5, CSS and JavaScript</h2>
+<p>As a web developer if you plan to build web applications using Rails or Sinatra or some Ruby based framework, you cannot do well if you do not know the basics of HTML, CSS and Javascript. Here, we shall be just skimming the surfcae. It is in your interest to read in depth and learn these technologies.</p>
+
+<h3>A Webpage, Step by Step</h3>
+<ol>
+<li><b>Start with content.</b> As a starting point, we will add raw text content and see what browsers do with it.</li>
+<li><b>Give the document structure.</b> You will learn some HTML elements and the elements that give a document its structure.</li>
+<li><b>Identify text elements.</b> You will describe the content using the appropriate text elements and learn about the proper way to use HTML.</li>
+<li><b>Add an image.</b> By adding an image to the page, you'll learn about attributes and empty elements.</li>
+<li><b>Change the look with a style sheet.</b> This exercise gives you a taste of formatting content with Cascading Style Sheets (CSS).</li>
+</ol>
+
+<h3>Before we begin, Launch a Text Editor</h3>
+<p>The text editor that is provided by your operating system, such as Notepad (Windows) or TextEdit (Mac), will do for these purposes.</p>
+
+<p>On your hard disk, create a local folder that will contain all of the files for the site. Your folder should be organized like this:</p>
+<pre>- DosaSite
+  |- config.ru
+  |- public
+    |- index.html
+    |- stylesheets
+    |- images
+</pre>
+
+<h4>Step 1: Start with content</h4>
+<p>In your text editor, type the following. Just copy it as you see here. Keep the line breaks.</p>
+
+<pre>Dosa Diner
+
+The Restaurant
+The Dosa Diner offers casual lunch and dinner fare in a hip atmosphere. The menu changes regularly to highlight the freshest ingredients.
+
+Catering Services
+You have fun... we'll do the cooking. Dosa Diner Catering can handle events from snacks for bridge club to elegant corporate fundraisers.
+
+Location and Hours
+Deccan Corner in Pune, India;
+Monday through Thursday 11am to 9pm, Friday and Saturday, 11am to midnight
+</pre>
+
+<p>Select "Save" or "Save as" from the File menu to get the Save As dialog box. Save this text file as <code>index.html</code> in the <code>DosaSite/public</code> folder. The filename needs to end in <code>.html</code> to be recognized by the browser as a web document.</p>
+
+<p>Launch your favorite browser (I use Chrome) and choose "Open" or "Open File" from the File menu. Navigate to <code>index.html</code> and select the document to open it in the browser.</p>
+
+<p>Our content is not looking good. Your browser ignores the line breaks in the source document.</p>
+
+<h4>Step 2: Give the document structure</h4>
+<p>HTML is a language for describing web pages.</p>
+<ul>
+<li>HTML stands for <b>H</b>yper <b>T</b>ext <b>M</b>arkup <b>L</b>anguage.</li>
+<li>HTML is not a programming language, it is a <b>markup language</b>.</li>
+<li>A markup language is a set of <b>markup tags</b>.</li>
+<li>HTML uses <b>markup tags</b> to describe web pages</li>
+</ul>
+
+<p>HTML markup tags are usually called HTML tags.</p>
+<ul>
+<li>HTML tags are keywords surrounded by <b>angle brackets</b> like &lt;html&gt;</li>
+<li>HTML tags normally <b>come in pairs</b> like &lt;b&gt; and &lt;/b&gt;</li>
+<li>The first tag in a pair is the <b>start tag</b>, the second tag is the <b>end tag</b></li>
+<li>Start and end tags are also called <b>opening tags</b> and <b>closing tags</b></li>
+</ul>
+
+<p>Here's a sample webpage that uses these HTML tags:</p>
+<pre>&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;My First Heading&lt;/h1&gt;
+
+    &lt;p&gt;My first paragraph.&lt;/p&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>In today's context, it's preferable that we use HTML5.</p>
+
+<p><b>Note:</b></p>
+<ol>
+<li>The <code>doctype</code> definition belongs at the top of your HTML file and tells the browser the type of your document. By using a <code>doctype</code> the browser is able to be more precise in the way it interprets and renders your pages. Using a <code>doctype</code> is highly recommended. The <code>doctype</code> for HTML5 is simply <code>&lt;!doctype html&gt;</code></li>
+<li>The text between &lt;html&gt; and &lt;/html&gt; describes the web page</li>
+<li>The text between &lt;body&gt; and &lt;/body&gt; is the visible page content</li>
+<li>The text between &lt;h1&gt; and &lt;/h1&gt; is displayed as a heading</li>
+<li>The text between &lt;p&gt; and &lt;/p&gt; is displayed as a paragraph</li>
+</ol>
+
+<p>Open the newly created <code>index.html</code> document, if it isn't open already. Edit and save the <code>index.html</code> document, such that it looks like this:</p>
+
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+  &lt;head&gt;
+    &lt;title&gt;Dosa Diner&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+  Dosa Diner
+
+  The Restaurant
+  The Dosa Diner offers casual lunch and dinner fare in a hip atmosphere. The menu changes regularly to highlight the freshest ingredients.
+
+  Catering Services
+  You have fun... we'll do the cooking. Dosa Diner Catering can handle events from snacks for bridge club to elegant corporate fundraisers.
+
+  Location and Hours
+  Deccan Corner in Pune, India;
+  Monday through Thursday 11am to 9pm, Friday and Saturday, 11am to midnight
+  &lt;/body&gt;
+
+&lt;/html&gt;
+</pre>
+
+<p>Open the <code>index.html</code> document in the browser or hit "refresh" or "reload" if it is already open. Our content is still not looking good.</p>
+
+<p>Note that we have used <code>&lt;meta charset="utf-8"&gt;</code>. When you specify the <code>meta</code> tag in HTML5, just supply the tag along with a character encoding.</p>
+
+<h4>Step 3: Identify text elements</h4>
+<p>Let us add the markup that identifies headings, subheads and paragraphs. Open the newly created <code>index.html</code> document, if it isn't open already. Edit and save the <code>index.html</code> document, such that it looks like this:</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+  &lt;head&gt;
+    &lt;title&gt;Dosa Diner&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+
+  &lt;/head&gt;
+
+  &lt;body&gt;
+  &lt;h1&gt;Dosa Diner&lt;/h1&gt;
+
+  &lt;h2&gt;The Restaurant&lt;/h2&gt;
+  &lt;p&gt;The Dosa Diner offers casual lunch and dinner fare in a hip atmosphere. The menu changes regularly to highlight the freshest ingredients.&lt;/p&gt;
+
+  &lt;h2&gt;Catering Services&lt;/h2&gt;
+  &lt;p&gt;You have fun... we'll do the cooking. Dosa Diner Catering can handle events from snacks for bridge club to elegant corporate fundraisers.&lt;/p&gt;
+
+  &lt;h2&gt;Location and Hours&lt;/h2&gt;
+  &lt;p&gt;Deccan Corner in Pune, India;
+  Monday through Thursday 11am to 9pm, Friday and Saturday, 11am to midnight&lt;/p&gt;
+  &lt;/body&gt;
+
+&lt;/html&gt;
+</pre>
+
+<p>Open the <code>index.html</code> document in the browser or hit "refresh" or "reload" if it is already open. Now our webpage looks much better.</p>
+
+<h4>Step 4: Add an image</h4>
+<p>Create the folder as follows:</p>
+<pre>DosaSite
+  |- public
+    |- index.html
+    |- images
+</pre>
+<p>Download the <a href="http://rubylearning.com/images/dosa.jpg">image</a> and store the same in the folder <code>DosaSite/public/images</code></p>
+
+<p>In HTML, images are defined with the <code>&lt;img&gt;</code> tag.</p>
+
+<p>The <code>&lt;img&gt;</code> tag does not have text content and is said to be empty, which means that it contains attributes only. Empty elements are terminated by adding a trailing slash preceded by a space before the closing bracket.</p>
+
+<p>To display an image on a page, you need to use the <code>src</code> attribute. <code>src</code> stands for "source". The value of the <code>src</code> attribute is the <a href="http://rubylearning.com/images/dosa.jpg">URL</a> of the image you want to display. The required <code>alt</code> attribute specifies an alternate text for an image, if the image cannot be displayed.</p>
+
+<p>Open the newly created <code>index.html</code> document, if it isn't open already. Edit and save the <code>index.html</code> document, such that it looks like this:</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+  &lt;head&gt;
+    &lt;title&gt;Dosa Diner&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+  &lt;h1&gt;&lt;img src="images/dosa.jpg" alt="Dosa Diner" /&gt;Dosa Diner&lt;/h1&gt;
+
+  &lt;h2&gt;The Restaurant&lt;/h2&gt;
+  &lt;p&gt;The Dosa Diner offers casual lunch and dinner fare in a hip atmosphere. The menu changes regularly to highlight the freshest ingredients.&lt;/p&gt;
+
+  &lt;h2&gt;Catering Services&lt;/h2&gt;
+  &lt;p&gt;You have fun... we'll do the cooking. Dosa Diner Catering can handle events from snacks for bridge club to elegant corporate fundraisers.&lt;/p&gt;
+
+  &lt;h2&gt;Location and Hours&lt;/h2&gt;
+  &lt;p&gt;Deccan Corner in Pune, India;
+  Monday through Thursday 11am to 9pm, Friday and Saturday, 11am to midnight&lt;/p&gt;
+  &lt;/body&gt;
+
+&lt;/html&gt;
+</pre>
+<p>Open the <code>index.html</code> document in the browser or hit "refresh" or "reload" if it is already open. The image should show up in the browser.</p>
+
+<h4>Step 5: Change the look with a style sheet</h4>
+<p>Create the folder as follows:</p>
+<pre>- DosaSite
+  |- public
+    |- index.html
+    |- stylesheets
+</pre>
+<p>An external style sheet is a plain-text document with at least one style sheet rule. The style sheet should be named with the <code>.css</code> suffix, so call it <code>dosasite.css</code>. Here are the contents of our style sheet:</p>
+<pre>body {
+  background color: #C2A7F2;
+  font-family: sans-serif;
+}
+h1 {
+  color: #2A1959;
+  border-bottom: 2px solid #2A1959;
+}
+h2 {
+  color: #474B94;
+  font-size: 1.2em;
+}
+h2, p {
+  margin-left: 120px;
+}
+</pre>
+<p>Let's quickly look at what we have defined in the style sheet. The background-color property specifies the background color of an element (in our case the <code>body</code>). With CSS, a color is most often specified by a HEX value - like "#ff0000".</p>
+
+<p>In CSS, there are two types of font family names:</p>
+<ul>
+<li><b>generic family</b> - a group of font families with a similar look (like "Serif" or "Monospace")</li>
+<li><b>font family</b> - a specific font family (like "Times New Roman" or "Arial")</li>
+</ul>
+<p>On computer screens, sans-serif fonts are considered easier to read than serif fonts.</p>
+
+<p>CSS colors are defined using a hexadecimal (hex) notation for the combination of Red, Green, and Blue color values (RGB). The lowest value that can be given to one of the light sources is 0 (hex 00). The highest value is 255 (hex FF). Hex values are written as 3 double digit numbers, starting with a # sign.</p>
+
+<p>The border-bottom shorthand property sets all the bottom border properties in one declaration. The properties that can be set, are (in order): border-bottom-width, border-bottom-style, and border-bottom-color. It does not matter if one of the values above are missing, e.g. border-bottom:solid #ff0000; is allowed.</p>
+
+<p>The font-size property sets the size of a font.</p>
+<p>The margin-left property sets the left margin of an element.</p>
+
+<p>The best method to refer to an external style sheet from within the HTML document is to create a <code>link</code> to the <code>dosasite.css</code> document, using the <code>link</code> element in the <code>head</code> of the document, as shown:</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+  &lt;head&gt;
+    &lt;title&gt;Dosa Diner&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="stylesheets/dosasite.css"&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+  &lt;h1&gt;&lt;img src="images/dosa.jpg" alt="Dosa Diner" /&gt;Dosa Diner&lt;/h1&gt;
+
+  &lt;h2&gt;The Restaurant&lt;/h2&gt;
+  &lt;p&gt;The Dosa Diner offers casual lunch and dinner fare in a hip atmosphere. The menu changes regularly to highlight the freshest ingredients.&lt;/p&gt;
+
+  &lt;h2&gt;Catering Services&lt;/h2&gt;
+  &lt;p&gt;You have fun... we'll do the cooking. Dosa Diner Catering can handle events from snacks for bridge club to elegant corporate fundraisers.&lt;/p&gt;
+
+  &lt;h2&gt;Location and Hours&lt;/h2&gt;
+  &lt;p&gt;Deccan Corner in Pune, India;
+  Monday through Thursday 11am to 9pm, Friday and Saturday, 11am to midnight&lt;/p&gt;
+  &lt;/body&gt;
+
+&lt;/html&gt;
+</pre>
+
+<p>Note that CSS has been declared the standard, and default, style for HTML5.</p>
+
+<h4>Add some JavaScript</h4>
+<p>In HTML5, JavaScript is now the standard and default scripting language.</p>
+
+<p>Remember that as the browser loads your page, it also creates an internal model of your webpage (document) that contains all the elements of your HTML markup. For each element in your HTML, the browser creates an object that represents it and places it in a tree-like structure with all the other elements. We call this tree the <b>Document Object Model</b> or the <b>DOM</b> for short. While the browser is loading your page it's also loading your JavaScript code, which typically <em>begins executing just after the page loads</em>. JavaScript interacts with your page through the DOM. Your JavaScript can interact with the DOM to get access to the elements and the content in them. JavaScript can also use the DOM to create or remove elements. When JavaScript modifies the DOM, the browser updates the page dynamically, so you see new content on your page.</p>
+<p>The HTML5 Application Programming Interfaces (APIs) give you access to audio, video, 2D drawing with the canvas, local storage and a bunch of other great technologies needed to build apps. And remember, to make use of all these APIs, we need JavaScript.</p>
+
+<p>JavaScript is a full-fledged programming language and you can do pretty much anything with it you can with other languages, and even more because we're programming inside a web page!</p>
+
+<h5>How and where to add JavaScript to your pages</h5>
+<ul>
+<li>Place your script inline, in the &lt;head&gt; element - the most common way to add code to your pages is to put a &lt;script&gt; element in the head of your page. When you add JavaScript in the &lt;head&gt; element, it is executed as soon as the browser parses the head (which it does first!), before it has parsed the rest of the page. Example: <code>&lt;script&gt; ... &lt;/script&gt;</code></li>
+<li>Add your script by referencing a separate JavaScript file - you can also link to a separate file containing JavaScript code. Put the URL of the file in the <code>src</code> attribute of the opening &lt;script&gt; tag and make sure you close the script element with &lt;/script&gt;. If you're linking to a file in the same directory, you can just use the name of the file.</li>
+<li>Add your code in the body of the document, either inline or as a link to a separate file - or, you can put your code right in the body of your HTML. Again, enclose your JavaScript code in the &lt;script&gt; element (or reference a separate file in the <code>src</code> attribute). JavaScript in the body of your page is executed when the browser parses the body (which it does, typically, top down).</li>
+</ul>
+
+<p>When the user loads our Dosa Diner webpage, we will give a message to the user using JavaScript's <code>alert</code> as follows:</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+  &lt;head&gt;
+    &lt;title&gt;Dosa Diner&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="stylesheets/dosasite.css"&gt;
+    &lt;script&gt;
+      alert("Hello Course Participants");
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+  &lt;h1&gt;&lt;img src="images/dosa.jpg" alt="Dosa Diner" /&gt;Dosa Diner&lt;/h1&gt;
+
+  &lt;h2&gt;The Restaurant&lt;/h2&gt;
+  &lt;p&gt;The Dosa Diner offers casual lunch and dinner fare in a hip atmosphere. The menu changes regularly to highlight the freshest ingredients.&lt;/p&gt;
+
+  &lt;h2&gt;Catering Services&lt;/h2&gt;
+  &lt;p&gt;You have fun... we'll do the cooking. Dosa Diner Catering can handle events from snacks for bridge club to elegant corporate fundraisers.&lt;/p&gt;
+
+  &lt;h2&gt;Location and Hours&lt;/h2&gt;
+  &lt;p&gt;Deccan Corner in Pune, India;
+  Monday through Thursday 11am to 9pm, Friday and Saturday, 11am to midnight&lt;/p&gt;
+  &lt;/body&gt;
+
+&lt;/html&gt;
+</pre>
+
+<p>We have finished the Dosa Diner webpage.</p>
+
+<h3>Store your webpage files on GitHub</h3>
+<p>Let us now store our static webpage and related files on Github.</p>
+
+<p>Log into your GitHub a/c and create a new repository. Call it <code>DosaSite</code>. Keep the GitHub page open and on your local hard-disk, put your local folder <code>DosaSite</code> under Git management. Open a Bash shell in the folder <code>DosaSite</code> and type:</p>
+
+<pre>$ git init
+$ touch README
+$ git add .
+$ git commit -m 'first commit'
+$ git remote add origin git@github.com:SatishTalim/DosaSite.git
+$ git push -u origin master
+</pre>
+<p>Replace SatishTalim (use your username) with what's shown on the already open GitHub page.</p>
+<p>In the open GitHub page, click on Continue and you should see your new repo <code>DosaSite</code> there. Mine is <a href="https://github.com/SatishTalim/DosaSite">https://github.com/SatishTalim/DosaSite</a></p>
+
+
+</div>
+</body>
+</html>

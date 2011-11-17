@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h2>Learning Rack</h2>
+<h3>What's Rack?</h3>
+<p>In the words of the author of Rack - <b>Christian Neukirchen</b>: Rack aims to provide a minimal API for connecting web servers supporting Ruby (like WEBrick, Mongrel etc.) and Ruby web frameworks (like Rails, Sinatra etc.).</p>
+
+<p>Web frameworks such as Sinatra are built on top of Rack or have a Rack interface for allowing web application servers to connect to them.</p>
+
+<p>The premise of Rack is simple - it just allows you to easily deal with HTTP requests.</p>
+
+<p>HTTP is a simple protocol: it basically describes the activity of a client sending a HTTP request to a server and the server returning a HTTP response. Both HTTP request and HTTP response in turn have very similar structures. A HTTP request is a triplet consisting of a method and resource pair, a set of headers and an optional body while a HTTP response is in triplet consisting of a response code, a set of headers and an optional body.</p>
+
+<p>Rack maps closely to this. A Rack application is a Ruby object that has a <code>call</code> method, which has a single argument, the <em>environment</em>, (corresponding to a HTTP request) and returns an array of 3 elements, <em>status</em>, <em>headers</em> and <em>body</em> (corresponding to a HTTP response).</p>
+
+<p>Rack includes <em>handlers</em> that connect Rack to all these web application servers (WEBrick, Mongrel etc.).</p>
+
+<p>Rack includes <em>adapters</em> that connect Rack to various web frameworks (Sinatra, Rails etc.).</p>
+
+<p>Between the server and the framework, Rack can be customized to your applications needs using <em>middleware</em>. The fundamental idea behind Rack middleware is - come between the calling client and the server, process the HTTP request before sending it to the server, and processing the HTTP response before returning it to the client.</p>
+</div>
+
+<div style="width:image 560 px; font-size:80%; text-align:center;"><img src="http://rubylearning.com/images/rack.jpeg" alt="Rack App" width="560" style="padding-bottom:0.5em;" /><br />A Rack App</div>
+
+<div>
+<h3>Rack Documentation</h3>
+<p><a href="http://rack.rubyforge.org/doc/">http://rack.rubyforge.org/doc/</a></p>
+
+<h3>Installing Rack</h3>
+
+<p>Note that I have Ruby 1.9.2 installed on a Windows box and all the programs in this article have been tested using that.</p>
+<p>Let's check if we already have rack with us. Open a command window and type:</p>
+<pre>irb --simple-prompt
+&gt;&gt; require 'rack'
+=> true
+&gt;&gt;
+</pre>
+
+<p>Yes, rack's already there on your machine. If rack's not there you will get an error like:
+<pre>LoadError: no such file to load -- rack
+</pre>
+
+<p>You can install rack by opening a new command window and typing:</p>
+<pre>gem install rack
+</pre>
+
+<h3>A quick visit to Ruby's proc object</h3>
+<p>Remember the <a href="http://rubylearning.com/satishtalim/ruby_procs.html">proc object from Ruby</a>? <em>Blocks are not objects</em>, but they can be converted into objects of class <code>Proc</code>. This can be done by calling the <code>lambda</code> method of the class <code>Object</code>. A block created with <code>lambda</code> acts like a Ruby method. The class <code>Proc</code> has a method <code>call</code> that invokes the block.</p>
+
+<p>In irb type:</p>
+<pre>&gt;&gt; my_rack_proc = lambda {puts 'Rack Intro'}
+=> #&lt;Proc:0x1fc9038@(irb):2(lambda)&gt;
+&gt;&gt; # method call invokes the block
+?&gt; my_rack_proc.call
+Rack Intro
+=> nil
+&gt;&gt;
+</pre>
+
+<h3>A simple Rack app - my_rack_proc</h3>
+<p>As mentioned earlier, our simple Rack application is a Ruby object (not a class) that responds to <code>call</code> and takes exactly one argument, the <em>environment</em>. The <em>environment</em> must be a true instance of <code>Hash</code>. The app should return an Array of exactly three values: the <em>status</em> code (it must be greater than or equal to 100), the <em>headers</em> (must be a hash), and the <em>body</em> (the body commonly is an Array of Strings, the application instance itself, or a File-like object. The <em>body</em> must respond to method <code>each</code> and must only yield <code>String</code> values.) Let us create our new <code>proc</code> object. Type:</p>
+<pre>&gt;&gt; my_rack_proc = lambda { |env| [200, {}, ["Hello. The time is #{Time.now}"]] }
+=> #&lt;Proc:0x1f4c358@(irb):5(lambda)&gt;
+&gt;&gt;
+</pre>
+<p>Now we can call the proc object my_rack_proc with the <code>call</code> method. Type:</p>
+<pre>&gt;&gt; my_rack_proc.call({})
+=> [200, {}, ["Hello. The time is 2011-10-24 09:18:56 +0530"]]
+&gt;&gt;
+</pre>
+<p><b>my_rack_proc</b> is our single line Rack application.</p>
+
+<p>In the above example, we have used an empty hash for headers. Instead, let's have something in the header as follows:</p>
+<pre>&gt;&gt; my_rack_proc = lambda { |env| [200, {"Content-Type" => "text/plain"}, ["Hello. The time is #{Time.now}"]] }
+=> #&lt;Proc:0x1f4c358@(irb):5(lambda)&gt;
+&gt;&gt;
+</pre>
+<p>Now we can call the proc object my_rack_proc with the <code>call</code> method. Type:</p>
+<pre>&gt;&gt; my_rack_proc.call({})
+=> [200, {"Content-Type" => "text/plain"}, ["Hello. The time is 2011-10-24 09:18:56 +0530"]]
+&gt;&gt;
+</pre>
+
+<p>We can run our Rack application (<b>my_rack_proc</b>) with any of the Rack handlers.</p>
+<p>To look at the Rack handlers available, in irb type:</p>
+
+<pre>&gt;&gt; Rack::Handler.constants
+=> [:CGI, :FastCGI, :Mongrel, :EventedMongrel, :SwiftipliedMongrel, :WEBrick, :LSWS, :SCGI, :Thin]
+&gt;&gt;
+</pre>
+
+<p>To get a handler for say <b>WEBrick</b> (the default <b>WEBrick</b>, web application server, that comes along with Ruby), type:</p>
+<pre>&gt;&gt; Rack::Handler::WEBrick
+=> Rack::Handler::WEBrick
+&gt;&gt;
+</pre>
+<p>All of these handlers have a common method called <code>run</code> to run all the Rack based applications.</p>
+
+<pre>&gt;&gt; Rack::Handler::WEBrick.run my_rack_proc
+[2011-10-24 10:00:45] INFO WEBrick 1.3.1
+[2011-10-24 10:00:45] INFO ruby 1.9.2 (2011-07-09) [i386-mingw32]
+[2011-10-24 10:00:45] INFO WEBrick::HTTPServer#start: pid=1788 port=80
+</pre>
+<p>Open a browser window and type the url: <a href="http://localhost/">http://localhost/</a></p>
+
+<p>In your browser window, you should see a string, something like this:</p>
+<pre>Hello. The time is 2011-10-24 10:02:20 +0530
+</pre>
+
+<p><b>Note</b>: If you already have something running at port 80, you can run this app at a different port, say 9876. Type:</p>
+<pre>&gt;&gt; Rack::Handler::WEBrick.run my_rack_proc, :Port => 9876
+[2011-10-24 11:32:21] INFO  WEBrick 1.3.1
+[2011-10-24 11:32:21] INFO  ruby 1.9.2 (2011-07-09) [i386-mingw32]
+[2011-10-24 11:32:21] INFO  WEBrick::HTTPServer#start: pid=480 port=9876
+</pre>
+<p>Open a browser window and type the url: <a href="http://localhost:9876/">http://localhost:9876/</a></p>
+
+<p>In your browser window, you should see a string, something like this:</p>
+<pre>Hello. The time is 2011-10-24 10:02:20 +0530
+</pre>
+
+<h3>Another Rack app - my_method</h3>
+<p>A Rack app need not be a lambda; it could be a method. Type:</p>
+<pre>&gt;&gt; def my_method env
+&gt;&gt; [200, {}, ["method called"]]
+&gt;&gt; end
+=> nil
+</pre>
+
+<p>We declare a method my_method that takes an argument env. The method returns three values.</p>
+
+<p>Next type:</p>
+<pre>&gt;&gt; Rack::Handler::WEBrick.run method(:my_method)
+[2011-10-24 14:32:05] INFO  WEBrick 1.3.1
+[2011-10-24 14:32:05] INFO  ruby 1.9.2 (2011-07-09) [i386-mingw32]
+[2011-10-24 14:32:05] INFO  WEBrick::HTTPServer#start: pid=1644 port=80
+</pre>
+<p>Open a browser window and type the url: <a href="http://localhost/">http://localhost/</a></p>
+<p>In your browser window, you should see something like this:</p>
+<pre>method called
+</pre>
+<p><code>Method</code> objects are created by <code>Object#method</code>. They are associated with a particular object (not just with a class). They may be used to invoke the method within the object. The <code>Method.call</code> method invokes the method with the specified arguments, returning the method's return value.</p>
+<p>Press <b>Ctrl-C</b> in irb to stop the <b>WEBrick</b> server.</p>
+
+<h3>Using rackup</h3>
+<p>The rack gem comes with a bunch of useful stuff to make life easier for a rack application developer. rackup is one of them.</p>
+
+<p>rackup is a useful tool for running Rack applications. rackup automatically figures out the environment it is run in, and runs your application as FastCGI, CGI, or standalone with Mongrel or WEBrick - all from the same configuration.</p>
+
+<p>To use rackup, you'll need to supply it with a rackup config file. By convention, you should use .ru extension for a rackup config file. Supply it a run RackObject and you're ready to go:</p>
+<pre>$ rackup config.ru
+</pre>
+
+<p>By default, rackup will start a server on port 9292.</p>
+
+<p>To view rackup help, open a command window and type:</p>
+<pre>$ rackup --help
+</pre>
+<p>Let us create a config.ru file that contains the following:</p>
+<pre>run lambda { |env| [200, {"Content-Type" => "text/plain"}, ["Hello. The time is #{Time.now}"]] }
+</pre>
+<p>This file contains <code>run</code>, which can be called on anything that responds to a <code>.call</code>.</p>
+
+<p>To run our rack app, in the same folder that contains config.ru, type:</p>
+<pre>$ rackup config.ru
+[2011-10-24 15:18:03] INFO WEBrick 1.3.1
+[2011-10-24 15:18:03] INFO ruby 1.9.2 (2011-07-09) [i386-mingw32]
+[2011-10-24 15:18:03] INFO WEBrick::HTTPServer#start: pid=3304 port=9292
+</pre>
+
+<p>Open a browser window and type the url: <a href="http://localhost:9292/">http://localhost:9292/</a></p>
+<p>In your browser window, you should see something like this:</p>
+<pre>Hello. The time is 2011-10-24 15:18:10 +0530
+</pre>
+<p>Press <b>Ctrl-C</b> to stop the <b>WEBrick</b> server.</p>
+
+<p>Now let's move our application from the config.ru file to my_app.rb file as follows:</p>
+<pre># my_app.rb
+class MyApp
+  def call env
+    [200, {"Content-Type" => "text/html"}, ["Hello Rack Participants"]]
+  end
+end
+</pre>
+<p>Also, our config.ru will change to:</p>
+<pre>require './my_app'
+run MyApp.new
+</pre>
+
+<p>To run our rack app, in the same folder that contains config.ru, type:</p>
+<pre>rackup config.ru
+[2011-10-25 06:18:16] INFO  WEBrick 1.3.1
+[2011-10-25 06:18:16] INFO  ruby 1.9.2 (2011-07-09) [i386-mingw32]
+[2011-10-25 06:18:16] INFO  WEBrick::HTTPServer#start: pid=2224 port=9292
+</pre>
+
+<p>Open a browser window and type the url: <a href="http://localhost:9292/">http://localhost:9292/</a></p>
+
+<p>In your browser window, you should see something like this:</p>
+<pre>Hello Rack Participants
+</pre>
+<p>Press <b>Ctrl-C</b> to stop the <b>WEBrick</b> server.</p>
+
+</div>
+</body>
+</html>

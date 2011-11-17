@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h2>Course Contents</h2>
+<ul>
+<li>Using Git
+  <ul>
+    <li>What's Version Control</li>
+    <li>What's Git?
+      <ul>
+        <li>Downloading and Installing Git</li>
+        <li>Create a local folder</li>
+        <li>Let us start using Git</li>
+        <li>Introduce yourself to Git</li>
+        <li>Create your SSH Key</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>Using GitHub
+  <ul>
+    <li>What's GitHub?
+      <ul>
+        <li>Set up your GitHub account</li>
+        <li>Creating a new repository</li>
+        <li>Add your SSH key to GitHub</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>Creating a simple webpage using HTML5, CSS and JavaScript
+  <ul>
+    <li>A Webpage, Step by Step</li>
+    <li>Before we begin, Launch a Text Editor
+      <ul>
+        <li>Step 1: Start with content</li>
+        <li>Step 2: Give the document structure</li>
+        <li>Step 3: Identify text elements</li>
+        <li>Step 4: Add an image</li>
+        <li>Step 5: Change the look with a style sheet</li>
+        <li>Add some JavaScript</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>Store your webpage files on GitHub</li>
+<li>Understanding HTTP concepts
+  <ul>
+    <li>What's HTTP?
+      <ul>
+        <li>Loading a web page</li>
+      </ul>
+    </li>
+    <li>HTTP request methods (verbs)
+      <ul>
+        <li>GET</li>
+        <li>POST</li>
+        <li>PUT</li>
+        <li>DELETE</li>
+      </ul>
+    </li>
+    <li>HTTP response codes</li>
+    <li>net/http library
+      <ul>
+        <li>Using URI</li>
+      </ul>
+    </li>
+    <li>Using open-uri</li>
+    <li>Using Hpricot</li>
+  </ul>
+</li>
+<li>Creating one's own Ruby Gem
+  <ul>
+    <li>What's a Ruby Gem?</li>
+    <li>Let us create a simple Ruby library</li>
+    <li>Steps for publishing our gem</li>
+  </ul>
+</li>
+<li>Learning Rack
+  <ul>
+    <li>What's Rack?</li>
+    <li>Rack Documentation</li>
+    <li>Installing Rack</li>
+    <li>A quick visit to Ruby's proc object</li>
+    <li>A simple Rack app - my_rack_proc</li>
+    <li>Another Rack app - my_method</li>
+    <li>Using rackup</li>
+  </ul>
+</li>
+<li>Deploying Pure Rack Apps to Heroku
+  <ul>
+    <li>What's Heroku?
+      <ul>
+        <li>Create an account on Heroku</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>Deploying a static webpage to Heroku</li>
+<li>What's JSON?</li>
+<li>Using MongoDB with Ruby Mongo driver
+  <ul>
+    <li>What's NoSQL?</li>
+    <li>What's MongoDB?</li>
+    <li>Setup MongoDB</li>
+    <li>MongoDB Core Concepts</li>
+    <li>The Basics
+      <ul>
+        <li>Switch databases</li>
+		<li>Insert a document</li>
+        <li>Use find()</li>
+        <li>Removing all documents</li>
+        <li>Query Selectors</li>
+        <li>Updating a document</li>
+      </ul>
+    </li>
+    <li>MongoDB Ruby Driver - mongo
+      <ul>
+        <li>Installation</li>
+        <li>Using the mongo gem</li>
+        <li>Making a Connection</li>
+        <li>Getting a List Of Collections</li>
+        <li>Getting a Collection</li>
+        <li>Inserting a Document</li>
+        <li>Updating a Document</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>Sinatra with MongoDB
+  <ul>
+    <li>What's Sinatra?</li>
+    <li>Create a folder on your hard disk</li>
+    <li>Install Sinatra</li>
+  </ul>
+</li>
+<li>References</li>
+</ul>
+
+<p>To become a Ruby professional, here are some tools that I suggest you start using as early as possible. Please rest assured that <em>spending time learning these tools is normal and in the end the reward is worth the effort.</em>.</p>
+
+<h2>Using Git</h2>
+<p>Here's what a <a href="http://rubylearning.com/blog/2009/01/13/little-known-ways-to-ruby-mastery-by-thibaut-barrere/">Ruby master</a> says about Git - "A new Ruby programmer should focus on source control - even if you work alone, even for a small "labs" type of applications, use SVN, Git or whatever you feel comfortable with.</p>
+
+<h3>What's Version Control?</h3>
+<p><em>Version control</em> also known as source control or source code management or revision control in its simplest form is saving your first draft, and then saving it as draft 2 and continuing on with your editing. This allows you some means of going back to a previous version if you decide that the direction you took in your document is not the direction you want to go, and you want to continue on from where your first draft first was. Version control in a more granular manner is being able to see each change as it was made. In reality, it ends up being likely that you want something between these two extremes.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Version_control_system#Common_vocabul">Read this</a> for more details.</p>
+
+<h3>What's Git?</h3>
+<p>Git is an open source version control system designed to handle very large projects with speed and efficiency, but just as well suited for small personal repositories (collection of resources that can be accessed to retrieve information); it is especially popular in the open source community, serving as a development platform for projects like the Linux Kernel, Ruby on Rails, etc.</p>
+
+<h4>Downloading and Installing Git</h4>
+<p>To download and install Git, the precompiled packages are available here: <a href="http://git.or.cz/">http://git.or.cz/</a></p>
+
+<p>Select the relevant package for your operating system.</p>
+
+<p><b>Note:</b> Git still has some issues on the Windows platform but for normal usage the msysgit package shouldn't let you down.</p>
+<p>Download and install it from the url: <a href="http://code.google.com/p/msysgit/downloads/list">http://code.google.com/p/msysgit/downloads/list</a> and select the current version available.</p>
+
+<p>Install by running the EXE installer. Accept the default install directory. It is recommended for Windows users to use the "Use Git Bash only" option.</p>
+
+<h4>Create a local folder</h4>
+
+<p>Create a new empty folder in any convenient location on your hard disk (I created and use the folder <code>my_ruby_programs</code> on c: of my hard disk).</p>
+
+<h4>Let us start using Git</h4>
+<p>Since I work on a Windows box, I shall talk about how to use Git there. However, all the following commands are also available on all other platforms.</p>
+
+<p>In Windows Explorer, right mouse click on your local folder <code>my_ruby_programs</code> and choose "Git Bash Here". This opens up a command window (bash shell).</p>
+
+<h4>Introduce yourself to Git</h4>
+
+<p>For all operating users, you now need to identify yourself to Git (you need to do this only once). With the bash shell still open type in the following:</p>
+<pre>$ git config --global user.name "Your name here"
+$ git config --global user.email "Your email id here"
+</pre>
+
+<p>Substitute in your own user name and email (note that Git does not allow accented characters in user name). This will set the info stored when you commit to a Git repository. Git has now been set up.</p>
+
+<h4>Create your SSH Key</h4>
+
+<p>The first step in using Git is to create your SSH Key. This will be used to secure communications between your machine and other machines, and to identify your source code changes. (If you already have an SSH key for other reasons, you can use it here, there is nothing Git-specific about this.)</p>
+
+<p>To create our ssh key, type the command:</p>
+<pre>$ ssh-keygen -C "username@email.com" -t rsa
+</pre>
+<p>(with your own email address, of course).</p>
+
+<p>Accept the default key file location. When prompted for a passphrase, make one up and enter it. If you feel confident that your own machine is secure, you can use a blank passphrase, for more convenience and less security. Note where it told you it stored the file. On the machine I tested with, it was stored in "c:\Documents and Settings\A\.ssh\". <em>Memorize your passphrase carefully. If you forget it, you will NOT be able to recover it</em>.</p>
+
+<p>Open the public file <code>id_rsa.pub</code> with a text editor. The text in there is your "public SSH key".</p>
+
+<h2>Using GitHub</h2>
+
+<h3>What's GitHub?</h3>
+
+<p>GitHub is a social code site optimized for hosting and sharing Git repositories. Putting a copy of your Git repository at GitHub serves two purposes:</p>
+
+<ol>
+<li>it's a full backup of your code (including the full history of commits).</li>
+<li>it makes any future collaboration much easier. This step is optional, but being a GitHub member will open the door to participating in a wide variety of open-source projects.</li>
+</ol>
+
+<h4>Set up your GitHub account</h4>
+
+<p>Go to <a href="https://github.com/signup/free">https://github.com/signup/free</a> and sign up for a free account. Remember, this account can have unlimited public repositories and public collaborators (the total number of users who may read, write and fork your public repositories). Also, make sure that Javascript is enabled in your browser.</p>
+
+<p>After you have created a GitHub account, login and please click on "Edit Your Profile" and fill in the relevant details in your GitHub account.</p>
+
+<h4>Creating a new repository</h4>
+
+<p>If you are already logged into your GitHub account you just created above, click on the "dashboard" link at the top right-hand-side of your GitHub page, you will see a "New Repository" button. Click on "New Repository" to create a new public repository (fill in the details like Project name, description etc.) Use the name <code>my_ruby_programs</code> for your Project name.</p>
+
+<p><b>Important:</b> GitHub will show you a page with some instructions like Global setup, Next steps etc. - please keep this page open and get back to your already open Bash shell for the folder <code>my_ruby_programs</code>. Currently your folder <code>my_ruby_programs</code> is empty.</p>
+
+<p>Next we shall put our local folder <code>my_ruby_programs</code> under Git management. In the open Bash shell type:</p>
+<pre>$ git init
+$ touch README
+$ git add README
+$ git commit -m 'first commit'
+</pre>
+
+<p>The <code>git init</code> command creates an empty Git repository or reinitializes an existing one. It has created a repository in the current folder i.e. <code>my_ruby_programs</code>. Git has created a <code>.git</code> subdirectory in your folder <code>my_ruby_programs</code> that will hold your changes locally (in compressed form). The new local repo will not contain anything yet.</p>
+
+<p>The <code>touch README</code> command creates the file <code>README</code>, if the file does not already exist. If the file already exists, the accessed / modification time is updated for that file.</p>
+
+<p>In Git, you "stage" things before you commit them. You do this with the <code>git add</code> command (for example: <code>git add README</code>). This adds specific content to the "stage". To stage all changes and new files, we type <code>git add .</code></p>
+
+<p>The <code>git add .</code> command will take the working directory and all subdirectories and every single file, i.e. it adds all content to the "stage" (this snapshot is now stored in a temporary staging area which Git calls the "index"). If you make any changes to a file after staging (but before committing), you'll need to <code>git add</code> the file again.</p>
+
+<p>When you get your changes just the way you want them added to the current revision, then you need to commit that revision to your local repository (this permanently stores the contents of the index in the repository).</p>
+
+<p>We already have something staged and ready and it is time to commit it. We do it as follows <code>git commit -m 'first commit'</code>.</p>
+
+<h4>Add your SSH key to GitHub</h4>
+
+<p>Access your account on GitHub and Click "Account Settings" > Click "SSH Public Keys" > Click "Add another public key"</p>
+<p>Open the <code>id_rsa.pub</code> file (which we had talked about earlier) with a text editor (Notepad, TextEdit, or gedit will do just fine). This is your public SSH key. You may need to turn on "view hidden files" to find it because the .ssh directory is hidden. It's important you copy your SSH key exactly as it is written without adding any newlines or whitespace. Now paste it into the "Key" field. Hit "Add Key".</p>
+
+<p>In your open Bash shell, type:</p>
+<pre>$ git remote add origin git@github.com:SatishTalim/myrubyprograms.git
+</pre>
+<p>Replace SatishTalim (use your username) with what's shown on the already open GitHub page. The above command needs to be executed only once in case you are not going to change the remote repository.</p>
+
+<p>Now type:</p>
+<pre>$ git push -u origin master
+</pre>
+
+<p>Once your changes are committed to your local repository, you need to push them to the remote repository for others to get at. To do that, you need to execute <code>git push</code>, which will push all the changes from your local repository up to the remote repository. We want to push changes back to the original repository, which is aliased as <em>origin</em>, to the master branch.</p>
+<p>Here's my sample GitHub repository - <a href="https://github.com/SatishTalim/myrubyprograms">https://github.com/SatishTalim/myrubyprograms</a>.</p>
+
+<p><b>Note:</b> From this point onwards, whenever you create a new program, or modify an existing program in the folder <code>my_ruby_programs</code>, open a Bash shell in that folder and type:</p>
+<pre>$ git add .
+$ git commit -m "commit"
+$ git push origin master
+</pre>
+
+<p>The GitHub repository will show you the latest files that you have uploaded.</p>
+
+<h3>Using Git &amp; GitHub eBook (Updated 15th Sept. 2011)</h3>
+<p><a href="http://rubylearning.com/blog/using-git-github-ebook/">Using Git &amp; GitHub eBook</a> is an easy-to-follow guide to learn the essential features of both Git and GitHub that you'll end up using every day.</p>
+<p>It is priced at a reasonable US$ 7. The money collected helps me maintain the site and provide quality content to you all.</p>
+<p>Purchase of this eBook is <b>not mandatory</b>.</p>
+
+
+</div>
+</body>
+</html>

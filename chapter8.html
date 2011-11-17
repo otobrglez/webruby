@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h2>What's JSON?</h2>
+<p>JSON stands for <b>J</b>ava<b>S</b>cript <b>O</b>bject <b>N</b>otation. JSON is syntax for storing and exchanging text information, much like XML. JSON is smaller than XML, and faster and easier to parse. JSON is language independent.</p>
+<pre>{
+"employees": [
+{ "firstName":"John" , "lastName":"Doe" },
+{ "firstName":"Anna" , "lastName":"Smith" },
+{ "firstName":"Peter" , "lastName":"Jones" }
+]
+}
+</pre>
+<p>The employee object is an array of 3 employee records (objects).</p>
+
+<p>JSON data is written as name/value pairs. A name/value pair consists of a field name (in double quotes), followed by a colon, followed by a value:</p>
+<pre>"firstName" : "Satish"
+</pre>
+
+<p>JSON values can be:</p>
+<ul>
+<li>A number (integer or floating point)</li>
+<li>A string (in double quotes)</li>
+<li>A Boolean (true or false)</li>
+<li>An array (in square brackets)</li>
+<li>An object (in curly bractes)</li>
+<li>null</li>
+</ul>
+
+<p>JSON objects are written inside curly brackets, Objects can contain multiple name/values pairs:</p>
+<pre>{ "firstName":"Satish" , "lastName":"Talim" }
+</pre>
+<p>We will come across JSON, when we study MongoDB next.</p>
+
+
+<h2>Using MongoDB with Ruby Mongo driver</h2>
+<h3>What's NoSQL?</h3>
+<p>In the words of <a href="http://openmymind.net/about.html">Karl Seguin</a>:</p>
+<blockquote><p>NoSQL is a broad term that means different things to different people. Personally, I use it very broadly to mean a system that plays a part in the storage of data. Put another way, NoSQL (again, for me), is the belief that your persistence layer isn't necessarily the responsibility of a single system. Where relational database vendors have historically tried to position their software as a one-size-fits-all solution, NoSQL leans towards smaller units of responsibility where the best tool for a given job can be leveraged. So, your NoSQL stack might still leverage a relational databases, say MySQL, but it'll also contain Redis as a persistence lookup for specific parts of the system as well as Hadoop for your intensive data processing. Put simply, NoSQL is about being open and aware of alternative, existing and additional patterns and tools for managing your data.<br /><br />You might be wondering where MongoDB fits into all of this. As a <em>document-oriented database</em>, Mongo is a more generalized NoSQL solution. It should be viewed as an alternative to relational databases. Like relational databases, it too can benefit from being paired with some of the more specialized NoSQL solutions.</p></blockquote>
+
+<h3>What's MongoDB?</h3>
+<p>MongoDB is a high-performance, open source, schema-free, document-oriented database written in C++.</p>
+
+<h3>Setup MongoDB</h3>
+
+<ul>
+<li>Download the binaries from the first row (the recommended stable version) for your operating system of choice from the <a href="">official download page</a>.</li>
+<li>Extract the archive (wherever you want) and navigate to the <code>bin</code> subfolder. Don't execute anything just yet, but know that <code>mongod</code> is the server process and <code>mongo</code> is the client shell - these are the two executables we'll be spending most of our time with.</li>
+<li>Create a new text file in the <code>bin</code> subfolder named <code>mongodb.config</code></li>
+<li>Add a single line to your <code>mongodb.config</code>: <code>dbpath=PATH_TO_WHERE_YOU_WANT_TO_STORE_YOUR_DATABASE_FILES</code>. For example, on Windows you might do <code>dbpath=c:\mongodb\data</code> and on Linux you might do <code>dbpath=/etc/mongodb/data</code>.</li>
+<li><em>Make sure the dbpath you specified exists</em></li>
+<li>Do add the <code>bin</code> folder to your <code>path</code>. MacOSX and Linux users can follow almost identical directions. The only thing you should have to change are the paths.</li>
+<li>Open a new command window and launch <code>mongod</code> with the <code>--config /path/to/your/mongodb.config</code> parameter. On my machine it is: <code>mongod --config c:/mongodb-win32-i386-2.0.1/bin/mongodb.config</code></li>
+</ul>
+
+<p>You now have MonogDB up and running. Open another command window and launch <code>mongo</code> (without the d) which will connect a shell to your running server. Try entering <code>db.version()</code> to make sure everything's working as it should. Hopefully you'll see the version number you installed.</p>
+
+<p>While the shell is useful to learn as well as being a useful administrative tool, your code will use a MongoDB driver. MongoDB has a <a href="http://www.mongodb.org/display/DOCS/Drivers">number of official drivers</a> for various languages. These drivers can be thought of as the various database drivers you are probably already familiar with. On top of these drivers, the development community has built more language/framework-specific libraries. For example, <a href="https://github.com/jnunemaker/mongomapper">MongoMapper</a> is a Ruby library which is ActiveRecord-friendly. Whether you choose to program directly against the core MongoDB drivers or some higher-level library is up to you.</p>
+
+<h3>MongoDB Core Concepts</h3>
+<ol>
+<li>MongoDB has the same concept of a '<em>database</em>' with which you are likely already familiar (or a schema for you Oracle folks). Within a MongoDB instance you can have zero or more databases, each acting as high-level containers for everything else.</li>
+<li>A database can have zero or more '<em>collections</em>'. A collection shares enough in common with a traditional 'table' that you can safely think of the two as the same thing.</li>
+<li>Collections are made up of zero or more '<em>documents</em>'. Again, a document can safely be thought of as a 'row'.</li>
+<li>A document is made up of one or more '<em>fields</em>', which you can probably guess are a lot like 'columns'.</li>
+<li>'<em>Indexes</em>' in MongoDB function much like their RDBMS counterparts.</li>
+<li>'<em>Cursors</em>' are different than the other five concepts but they are important enough. The important thing to understand about cursors is that when you ask MongoDB for data, it returns a cursor, which we can do things to, such as counting or skipping ahead, without actually pulling down data.</li>
+</ol>
+
+<p>To recap, MongoDB is made up of databases which contain collections. A collection is made up of documents. Each document is made up of fields. Collections can be indexed, which improves lookup and sorting performance. Finally, when we get data from MongoDB we do so through a cursor whose actual execution is delayed until necessary.</p>
+
+</div>
+
+<div style="width:image 560 px; font-size:80%; text-align:center;"><img src="http://rubylearning.com/images/MongoDB.jpg" alt="MongoDB" width="560" style="padding-bottom:0.5em;" /><br />MongoDB</div>
+
+<div>
+
+<p><b>Note</b>: <em>The core difference between relational databases and document-oriented databases comes from the fact that relational databases define columns at the table level whereas a document-oriented database defines its fields at the document level</em>.</p>
+
+<h3>The Basics</h3>
+<p>The <code>mongo</code> shell runs JavaScript. There are some global commands you can execute, like <code>help</code> or <code>exit</code>. Commands that you execute against the current database are executed against the <code>db</code> object, such as <code>db.help()</code> or <code>db.stats()</code>. Commands that you execute against a specific collection are executed against the <code>db.COLLECTION_NAME</code> object, such as <code>db.students.help()</code> or <code>db.students.count()</code>.</p>
+
+<p>Because <code>mongo</code> is a JavaScript shell, if you execute a method and omit the parentheses (), you'll see the method body rather than executing the method. For example, if you enter <code>db.help</code> (without the parentheses), you'll see the internal implementation of the help method.</p>
+
+<h4>Switch databases</h4>
+<p>Use the global <code>use</code> method to switch databases. In the <code>mongo</code> window type:</p>
+<pre>use rubylearning
+switched to db rubylearning
+</pre>
+
+<h4>Insert a document</h4>
+<p>It doesn't matter that the database doesn't really exist yet. The first collection that we create will also create the actual <code>rubylearning</code> database. Now that you are inside a database, you can start issuing database commands, like <code>db.getCollectionNames()</code>. If you do so, you should get an empty array ([ ]). Since collections are schema-less, we don't explicitly need to create them. We can simply insert a document into a new collection. To do so, use the insert command, supplying it with the document to insert:</p>
+<pre>db.students.insert({name: 'Satish', gender: 'm', weight: 74})
+</pre>
+
+<p>The above line is executing <code>insert</code> against the <code>students</code> collection, passing it a single argument. Internally MongoDB uses a binary serialized JSON format. Externally, this means that we use JSON a lot, as is the case with our parameters. If we execute <code>db.getCollectionNames()</code> now, we'll actually see two collections: <code>students</code> and <code>system.indexes</code>. <code>system.indexes</code> is created once per database and contains the information on our databases index.</p>
+
+<h4>Use find()</h4>
+<p>You can now use the <code>find</code> command against <code>students</code> to return a list of documents:</p>
+<pre>db.students.find()
+{ "_id" : ObjectId("4ec0e38aadb3865da7f2fd63"), "name" : "Satish", "gender" : "m", "weight" : 74 }
+</pre>
+
+<p>Notice that, in addition to the data you specified, there's an <code>_id</code> field. Every document must have a unique <code>_id</code> field. You can either generate one yourself or let MongoDB generate an ObjectId for you. Most of the time you'll probably want to let MongoDB generate it for you. By default, the <code>_id</code> field is indexed - which explains why the system.indexes collection was created. You can look at system.indexes:</p>
+<pre>db.system.indexes.find()
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "rubylearning.students", "name" : "_id_" }
+</pre>
+
+<p>What you're seeing is the name of the index, the database and collection it was created against and the fields included in the index.</p>
+
+<p>Now insert a totally different document into <code>students</code>, such as:</p>
+<pre>db.students.insert({name: 'Michael', gender: 'm', home: 'Vienna', mentor: true})
+</pre>
+
+<p>And, again use find to list the documents.</p>
+<pre>db.students.find()
+{ "_id" : ObjectId("4ec0e38aadb3865da7f2fd63"), "name" : "Satish", "gender" : "m", "weight" : 74 }
+{ "_id" : ObjectId("4ec0e6a0adb3865da7f2fd64"), "name" : "Michael", "gender" : "m", "home" : "Vienna", "mentor" : true }
+</pre>
+
+<h4>Removing all documents</h4>
+<p>To remove all documents that we have put in the <code>students</code> collection, type:</p>
+<pre>db.students.remove()
+</pre>
+
+<h4>Query Selectors</h4>
+<p>A MongoDB query selector is like the where clause of an SQL statement. As such, you use it when finding, counting, updating and removing documents from collections. A selector is a JSON object, the simplest of which is <code>{}</code> which matches all documents (<code>null</code> works too). If we wanted to find all female students, we could use <code>{gender:'f'}</code>.</p>
+<p>Let's insert some documents into our <code>students</code> collection:</p>
+<pre>db.students.insert({name: 'Satish', dob: new Date(1955,2,10,23,55), loves: ['ruby','java'], weight: 76, gender: 'm', country: 'india'});
+db.students.insert({name: 'Victor', dob: new Date(1960,4,11,13,55), loves: ['ruby','c++'], weight: 67, gender: 'm', country: 'usa'});
+db.students.insert({name: 'Michael', dob: new Date(1965,12,1,10,45), loves: ['ruby','clojure'], weight: 65, gender: 'm', country: 'austria'});
+db.students.insert({name: 'Satoshi', dob: new Date(1970,1,11,3,55), loves: ['ruby','c'], weight: 65, gender: 'm', country: 'japan'});
+db.students.insert({name: 'Sangeeta', dob: new Date(1965,3,11,2,15), loves: ['english','french'], weight: 60, gender: 'f', country: 'india'});
+</pre>
+
+<p><code>{field: value}</code> is used to find any documents where field is equal to value. <code>{field1: value1, field2: value2}</code> is how we do an <em>and</em> statement. The special <code>$lt</code>, <code>$lte</code>, <code>$gt</code>, <code>$gte</code> and <code>$ne</code> are used for less than, less than or equal, greater than, greater than or equal and not equal operations. For example, to get all male students that weigh more than 70 kgs, we could do:</p>
+<pre>db.students.find({gender: 'm', weight: {$gt: 70}})
+{ "_id" : ObjectId("4ec1d27d0af675a4df885ffd"), "name" : "Satish", "dob" : ISODa
+te("1955-03-10T18:25:00Z"), "loves" : [ "ruby", "java" ], "weight" : 76, "gender
+" : "m", "country" : "india" }
+</pre>
+
+<p>The <code>$exists</code> operator is used for matching the presence or absence of a field, for example:</p>
+<pre>db.students.find({name: {$exists: false}})
+</pre>
+
+<p>If we want to OR rather than AND we use the <code>$or</code> operator and assign it to an array of values we want or'd:</p>
+<pre>db.students.find({gender: 'f', $or: [{loves: 'java'}, {loves: 'english'}, {weight: {$lt: 80}}]})
+{ "_id" : ObjectId("4ec1d62f0af675a4df886001"), "name" : "Sangeeta", "dob" : ISODate("1965-04-10T20:45:00Z"), "loves" : [ "english", "french" ], "weight" : 60, "gender" : "f", "country" : "india" }
+</pre>
+<p>The above will return all female students which either love java or english or weigh less than 80 kgs.</p>
+
+<p>So far we have seen three of the four CRUD (create, read, update and delete) operations. Let's now look at <code>update</code>.</p>
+
+<h4>Updating a document</h4>
+<p>We already have some documents in our database <code>rubylearning</code>. Satoshi, one of the participants informs us that he has lost weight and is now at 62 kgs. Let's update the document. Type:</p>
+<pre>db.students.update({name: 'Satoshi'}, {weight: 62})
+</pre>
+
+<p>Now, if we look at the updated document:</p>
+<pre>db.students.find({name: 'Satoshi'})
+</pre>
+<p>You should discover <b>updates first surprise</b>. No document is found because the second parameter we supply is used to replace the original. In other words, the <code>update</code> found a document by name and replaced the entire document with the new document (the 2nd parameter). <em>This is different than how SQL's update command works</em>.</p>
+
+<p>When you want change the value of one, or a few fields, it's best to use MongoDB's <code>$set</code> modifier:</p>
+<pre>db.students.update({weight: 62}, {$set: {name: 'Satoshi', dob: new Date(1970,1,11,3,55), loves: ['ruby','c'], gender: 'm', country: 'japan'}})
+</pre>
+
+<p>This'll reset the lost fields. It won't overwrite the new weight since we didn't specify it. Now if we execute:</p>
+<pre>db.students.find({name: 'Satoshi'})
+</pre>
+<p>We get the expected result. Therefore, the correct way to have updated the weight in the first place is:</p>
+<pre>db.students.update({name: 'Satoshi'}, {$set: {weight: 62}})
+</pre>
+
+<p>Now let's learn how to use the MongoDB Ruby Driver with whatever we have learnt so far.</p>
+
+<h3>MongoDB Ruby Driver - mongo</h3>
+<h4>Installation</h4>
+<p>Since the driver is just a gem, installation is simple:</p>
+<pre>gem install mongo
+</pre>
+
+<p>There is one more piece to install, <code>bson_ext</code>. Essentially, this is a collection of C extensions used to increase the speed of serialization. While this is optional, I recommend that you install it:</p>
+<pre>gem install bson_ext
+</pre>
+
+<h4>Using the mongo gem</h4>
+<p>Your Ruby program needs the following:</p>
+<pre>require 'mongo'
+</pre>
+
+<h4>Making a Connection</h4>
+<p>A <code>Mongo::Connection</code> instance represents a connection to MongoDB.</p>
+<pre>require 'mongo'
+conn = Mongo::Connection.new
+</pre>
+
+<p>A database doesn't have to exist - if it doesn't, MongoDB will create it for you. The following example shows three ways to connect to the database "rubylearning" on the local machine:</p>
+<pre>require 'mongo'
+db = Mongo::Connection.new.db("rubylearning")
+db = Mongo::Connection.new("localhost").db("rubylearning")
+db = Mongo::Connection.new("localhost", 27017).db("rubylearning")
+</pre>
+<p>Here, localhost and 27017 represents the MongoDB server address and port when connecting. At this point, the <code>db</code> object will be a connection to a MongoDB server for the specified database. Each DB instance uses a separate socket connection to the server.</p>
+
+<p>Let's call our program <code>mongodb1.rb</code>. The code so far:</p>
+<pre>require 'mongo'
+conn = Mongo::Connection.new
+db = conn.db("rubylearning")
+</pre>
+
+<h4>Getting a List Of Collections</h4>
+<p>Each database has zero or more collections. You can retrieve a list of them from the <code>db</code> (and print out any that are there):</p>
+<pre>db.collection_names.each { |name| puts name }
+</pre>
+
+<p>It displays:</p>
+<pre>students
+system.indexes
+</pre>
+
+<h4>Getting a Collection</h4>
+<p>You can get a collection to use using the <code>collection</code> method:</p>
+<pre>coll = db.collection("students")
+</pre>
+
+<p>Once you have this collection object, you can now do things like insert data, query for data, etc.</p>
+
+<h4>Inserting a Document</h4>
+<p>MongoDB stores its data as key/value pairs, which maps nicely to Ruby's <code>Hash</code>. Create a hash with our data; insert it into the <code>coll</code> collection; and in return, we receive the <code>ObjectId</code> for the data inserted, from MongoDB.</p>
+<pre>doc = {:name => 'Manisha', :dob => Time.now, :loves => ['english','marathi'], :weight => 62, :gender => 'f', :country => 'india'}
+coll_id = coll.insert(doc)
+</pre>
+
+<h4>Updating a Document</h4>
+<p>Using the ObjectId we got back from our <code>insert</code> query, we find that same document again. After changing the data as we see fit, we update the previous document using the <code>update</code> method:</p>
+<pre>coll.update( { :_id => coll_id }, '$set' => { :weight => 60 } )
+</pre>
+
+</div>
+</body>
+</html>

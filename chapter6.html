@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h2>Deploying Pure Rack Apps to Heroku</h2>
+<h3>What's Heroku?</h3>
+<p>Heroku (pronounced her-OH-koo) is a cloud application platform - a new way of building and deploying web apps.</p>
+
+<h4>Create an account on Heroku</h4>
+
+<p>Please ensure that you are connected to the internet and then create an account on Heroku (obviously do this only once) if you don't have one - <a href="http://heroku.com/signup">http://heroku.com/signup</a>.</p>
+
+<p>On your local machine, open a new command window to install the Heroku gem file. Type:</p>
+<pre>gem install heroku
+</pre>
+
+<p>Next, create a new folder, say <code>rackheroku</code>. Assuming that you have Git installed, open a Bash shell in that folder. You now need to identify yourself to Git (you need to do this only once). With the bash shell still open type in the following:</p>
+<pre>git config --global user.name "Your name here"
+git config --global user.email "Your email id"
+</pre>
+
+<p>Git does not allow accented characters in user name. This will set the info stored when you commit to a Git repository. Git has now been set up.</p>
+
+<p>The first step in using Git is to create your SSH Key. This will be used to secure communications between your machine and other machines, and to identify your source code changes. (If you already have an SSH key for other reasons, you can use it here, there is nothing Git-specific about this.)</p>
+
+<p>To create our ssh key, open a new command window and type:</p>
+<pre>$ ssh-keygen -C "username@email.com" -t rsa
+</pre>
+<p>(with your own email address, of course).</p>
+
+<p>Accept the default key file location. When prompted for a passphrase, make one up and enter it. If you feel confident that your own machine is secure, you can use a blank passphrase, for more convenience and less security. Note where it told you it stored the file. On my Windows box, it was stored in "C:\Documents and Settings\A\.ssh\". Memorize your passphrase carefully. If you forget it, you will NOT be able to recover it.</p>
+<p>Open the public file id_rsa.pub with a text editor. The text in there is your "public SSH key".</p>
+
+<p>Upload your public key (do it only once):</p>
+<pre>$ heroku keys:add
+</pre>
+<p>You'll be prompted for your username and password the first time you run a heroku command; they'll be saved on ~/.heroku/credentials so you won't be prompted on future runs. It will also upload your public key to allow you to push and pull code.</p>
+
+<p>In order for Heroku to know what to do with your Rack app, create a <code>config.ru</code> (ru stands for Rack up) in the <code>rackheroku</code> folder. The contents are:</p>
+<pre>require './my_app'
+run MyApp.new
+</pre>
+
+<p>Also, copy the <code>my_app.rb</code> file to the <code>rackheroku</code> folder. It's contents are:</p>
+<pre># my_app.rb
+class MyApp
+  def call env
+    [200, {"Content-Type" => "text/html"}, ["Hello Rack Participants"]]
+  end
+end
+</pre>
+
+<p>In the already open command window, we will install bundler. Type:</p>
+<pre>gem install bundler
+</pre>
+
+<p>Close the command window. Next, we will install the required gems (if any) via bundler. In the already open Git Bash shell for folder <code>rackheroku</code> type:</p>
+<pre>$ bundle init
+Writing new Gemfile to c:/rackheroku/Gemfile
+</pre>
+
+<p>Edit the created <code>Gemfile</code> with your preferred text editor to let it look like this:</p>
+<pre>source "http://rubygems.org"
+gem 'rack'
+</pre>
+
+<p>Now we need to tell Bundler to check if we're missing the gems our application depends on, if so, tell it to install them. In your open Bash shell type:</p>
+<pre>$ bundle check
+The Gemfile's dependencies are satisfied
+</pre>
+
+<p>Finally in the open Bash shell, type:</p>
+<pre>$ bundle install
+</pre>
+
+<p>This will ensure all gems specified on Gemfile, together with their dependencies, are available for your application. Running "bundle install" will also generate a "Gemfile.lock" file. The Gemfile.lock ensures that your deployed versions of gems on Heroku match the version installed locally on your development machine.</p>
+
+<p>Next we set up our local app to use Git. Type:</p>
+<pre>$ git init
+$ git add .
+$ git commit -m "Rack app first commit"
+</pre>
+
+<p>Let's create our Rack app on Heroku. Type:</p>
+<pre>$ heroku create
+Creating quiet-winter-3741... done, stack is bamboo-mri-1.9.2
+http://quiet-winter-3741.heroku.com/ | git@heroku.com:quiet-winter-3741.git
+Git remote heroku added
+</pre>
+
+<p>The app has been created and two URLs are provided. One is for the web face of your new app i.e. http://quiet-winter-3741.heroku.com/ If you visit that URL now, you'll see a standard welcome page, until you push your application up. The other one is for the Git repository that you will push your code to. Normally you would need to add this as a git remote; the "heroku create" command has done this for you automatically. Do note that the output from the create command <em>will be different for each one of you</em>.</p>
+
+<p>Now let us deploy our code to Heroku. Type:</p>
+<pre>git push heroku master
+</pre>
+
+<p>At this stage we can rename our app to rackheroku. Type:</p>
+<pre>$ heroku rename rackheroku
+http://rackheroku.heroku.com/ | git@heroku.com:rackheroku.git
+Git remote heroku updated
+</pre>
+
+<p>Our app is now deployed to Heroku. Open a new browser window and type <a href="http://rackheroku.heroku.com/">http://rackheroku.heroku.com/</a></p>
+
+<p>In the browser window, you should see:</p>
+<pre>Hello Rack Participants from across the globe
+</pre>
+</div>
+</body>
+</html>

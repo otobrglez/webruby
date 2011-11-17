@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h2>Deploying a static webpage to Heroku</h2>
+
+<p>We have already created a simple webpage before and the related files are in the folders as shown below:</p>
+
+<pre>- DosaSite
+  |- config.ru
+  |- public
+    |- index.html
+    |- stylesheets
+    |- images
+</pre>
+
+<p>In <code>config.ru</code> file add the following:</p>
+<pre>use Rack::Static,
+  :urls => ["/stylesheets", "/images"],
+  :root => "public"
+
+run lambda { |env|
+  [
+    200,
+    {
+      'Content-Type'  => 'text/html',
+      'Cache-Control' => 'public, max-age=86400'
+    },
+    File.open('public/index.html', File::RDONLY)
+  ]
+}
+</pre>
+
+<p>This assumes that your template uses relative references to the images and stylesheets.</p>
+
+<p>All Heroku apps are fronted by <code>Varnish</code>, an HTTP Accelerator, and we should take advantage of it. You may have noticed in the <code>config.ru</code> file we set the <code>Cache-Control</code> header to 86400 seconds (24 hours). This tells the accelerator to go ahead and cache the page. The accelerator already caches any <code>Rack::File</code> for 12 hours as well meaning all your stylesheets and images will also be cached.</p>
+
+<p>Open a Bash shell in the folder <code>DosaSite</code> and type:</p>
+<pre>$ git add .
+$ git commit -m "first commit to Heroku"
+</pre>
+
+<p>Let's create our Rack app on Heroku. Type:</p>
+<pre>$ heroku create
+Creating falling-fire-2394... done, stack is bamboo-mri-1.9.2
+http://falling-fire-2394.heroku.com/ | git@heroku.com:falling-fire-2394.git
+Git remote heroku added
+</pre>
+
+<p>Now let us deploy our code to Heroku. Type:</p>
+<pre>$ git push heroku master
+</pre>
+
+<p>At this stage we can rename our app to <code>dosasite</code>. Type:
+<pre>$ heroku rename dosasite
+http://dosasite.heroku.com/ | git@heroku.com:dosasite.git
+Git remote heroku updated
+</pre>
+
+<p>Our app is now deployed to Heroku. Open a new browser window and type <a href="http://dosasite.heroku.com/">http://dosasite.heroku.com/</a>. You should see our simple webpage.</p>
+
+
+</div>
+</body>
+</html>

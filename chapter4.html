@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<title>Intermediate Ruby</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+
+<h2>Creating one's own Ruby Gem</h2>
+
+<h3>What's a Ruby Gem?</h3>
+<p>To solve various problems with Ruby, you might develop your own libraries. Also, you might want to open-source your libraries to get help from the Ruby community and have many developers working on the same.</p>
+
+<p>A gem is a packaged Ruby application or library. RubyGems is the standard way to distribute Ruby applications and libraries and is available to you after you have downloaded and installed Ruby 1.9+.</p>
+
+<h3>Let us create a simple Ruby library</h3>
+<p>Let's first create a simple library that extends the <code>String</code> class and store this in a file called <code>my_string_extend.rb</code> in the folder <code>my_string_extend/lib</code>. The <em>lib</em> folder will contain the Ruby code related to the library:</p>
+<pre># my_string_extend.rb
+class String
+  def writesize
+    self.size
+  end
+end
+</pre>
+<p>The library opens up the <code>String</code> class and adds a method <code>writesize</code> (which returns the size of the string).</p>
+
+<p>For open-source applications, the gem server to use for your applications is the one provided at <a href="https://rubygems.org/">https://rubygems.org/</a>. This is where users will look, and is where gem will also look by default when you issue a <code>gem install</code> command. Please make sure that the name of your gem isn't in use already. Type:</p>
+<pre>$ gem list -r my_string_extend
+
+*** REMOTE GEMS ***
+</pre>
+
+<p>Observe that no gem of the name <code>my_string_extend</code> exists. We are safe! Now let us now turn our library into a gem, so that one can use it anywhere.</p>
+
+<h3>Steps for publishing our gem</h3>
+
+<p><b>1.</b> Update to the latest RubyGem - In the folder <code>my_string_extend</code> open a command window and type:</p>
+<pre>$ gem update --system
+</pre>
+
+<p><b>2.</b> Create an account on RubyGems.org - <a href="http://rubygems.org/sign_up">http://rubygems.org/sign_up</a> and confirm your email. Later on, you'll need to provide your login credentials the first time you push a gem to the server.</p>
+
+<p><b>3.</b> Create a Gem Specification - In the folder <code>my_string_extend</code> copy the following file <code>my_string_extend.gemspec</code> and edit it as per your needs:</p>
+<pre>Gem::Specification.new do |s|
+  s.name        = 'my_string_extend'
+  s.version     = '0.0.1'
+  s.date        = '2011-10-27'
+  s.summary     = "String Extend"
+  s.description = "The library opens up the String class and adds a method writesize, which returns the size of the string."
+  s.authors     = ["Satish Talim"]
+  s.email       = ["satish@rubylearning.org"]
+  s.homepage    = "http://rubylearning.org/"
+  s.files       = ["lib/my_string_extend.rb"]
+end
+</pre>
+
+<p>The gemspec defines what's in the gem, who made it, and the version of the gem. The gemspec is a chunk of Ruby code that the gem command will read and execute to understand our app, such as its name, files, and dependencies. It's also our interface to RubyGems.org, all the information you see on a gem page comes from the gemspec.</p>
+
+<p><b>4.</b> Once we have our gemspec, we have to build a gem from it. In the folder <code>my_string_extend</code> type:</p>
+<pre>$ gem build my_string_extend.gemspec
+  Successfully built RubyGem
+  Name: my_string_extend
+  Version: 0.0.1
+  File: my_string_extend-0.0.1.gem
+</pre>
+
+<p>We can then install it locally to test it out:</p>
+<pre>$ gem install ./my_string_extend-0.0.1.gem
+Successfully installed my_string_extend-0.0.1
+1 gem installed
+Installing ri documentation for my_string_extend-0.0.1...
+Installing RDoc documentation for my_string_extend-0.0.1...
+</pre>
+
+<p>Lets require our gem and use it:</p>
+<pre>$ irb --simple-prompt
+&gt;&gt; require 'my_string_extend'
+=> true
+&gt;&gt; puts "Hello".writesize
+5
+=> nil
+&gt;&gt; quit
+</pre>
+
+<p><b>5.</b> Now publish our gem out to RubyGems.org. In the folder <code>my_string_extend</code> type:</p>
+<pre>$ gem push my_string_extend-0.0.1.gem
+Enter your RubyGems.org credentials.
+Don't have an account yet? Create one at http://rubygems.org/sign_up
+   Email:   satish@rubylearning.org
+Password:
+
+Pushing gem to https://rubygems.org...
+Signed in.
+Pushing gem to https://rubygems.org...
+Successfully registered gem: my_string_extend (0.0.1)
+</pre>
+
+<p>In just a few moments (usually a minute), your gem will be available for installation by anyone:</p>
+<pre>$ gem list -r my_string_extend
+
+*** REMOTE GEMS ***
+
+my_string_extend (0.0.1)
+</pre>
+<p>Here's our Ruby gem on the RubyGems.org site</p>
+
+</div>
+
+<div style="width:image 560 px; font-size:80%; text-align:center;"><a href="https://rubygems.org/gems/my_string_extend"><img src="http://rubylearning.com/images/rubygem.jpg" alt="Rack App" width="560" style="padding-bottom:0.5em;" /></a><br />Our Ruby Gem</div>
+
+</div>
+</body>
+</html>
