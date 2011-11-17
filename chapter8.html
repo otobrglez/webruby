@@ -281,14 +281,20 @@ coll.update( { :_id => coll_id }, '$set' => { :weight => 60 } )
 <pre>require 'mongo'
 
 db = Mongo::Connection.new('staff.mongohq.com', 10066).db("rubylearning")
-auth = db.authenticate('IndianGuru', 'sats7602')
+auth = db.authenticate('username', 'password')
 
 coll = db.collection("students")
 doc = {:name => 'Manish', :dob => Time.now, :loves => ['english','marathi'], :weight => 62, :gender => 'm', :country => 'india'}
 coll_id = coll.insert(doc)
 </pre>
 
-<p>You can see that the collection <code>students</code> has a document, as seen in the image below.</p>
+<p>In the above code, MongoDB is run in a secure mode where access to databases is controlled through name and password authentication. When run in this mode, any client application must provide a name and password before doing any operations. In the Ruby driver, you simply do the following with the connected mongo object:</p>
+<pre>auth = db.authenticate('username', 'password')
+</pre>
+
+<p>If the name and password are valid for the database, auth will be true. Otherwise, it will be false.</p>
+
+<p>After executing the above code, the collection <code>students</code> has a document, as seen in the image below.</p>
 </div>
 
 <div style="width:image 560 px; font-size:80%; text-align:center;"><img src="http://rubylearning.com/images/collection.jpg" alt="collection" width="560" style="padding-bottom:0.5em;" /><br />Collection</div>
