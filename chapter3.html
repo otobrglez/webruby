@@ -162,6 +162,37 @@ page = Hpricot(open('http://rubylearning.com'))
 puts "Page title is: " + page.at(:title).inner_html
 </pre>
 
+<h3>Using Nokogiri</h3>
+<p>Another library worth looking into it is <a href="http://nokogiri.org/">Nokogiri</a>. Nokogiri is an <a href="http://www.wikipedia.org/wiki/HTML">HTML</a>, <a href="http://www.wikipedia.org/wiki/XML">XML</a>, <a href="http://www.wikipedia.org/wiki/XML#Simple_API_for_XML_.28SAX.29">SAX</a> parser/reader with the ability to search documents via <a href="http://www.wikipedia.org/wiki/XPath">XPath</a> or <a href="http://www.wikipedia.org/wiki/CSS3#CSS_3">CSS3</a> selectors.</p>
+
+<p>You can install Nokogiri with following command:</p>
+<pre>gem install nokogiri</pre>
+
+<h4>Fetching documents from web</h4>
+<p>You can combine <code>nokogiri</code> with <code>open-uri</code> to fetch document like so:</p>
+<pre># nokogiri_demo.rb
+require 'nokogiri'
+require 'open-uri'
+doc = Nokogiri::HTML(open("http://rubylearning.com/"))
+</pre>
+
+<h4>Searching inside HTML documents</h4>
+
+<p>Nokogiri enables you to seach documents with XPath or CSS3 selectos like so:<p>
+<pre># nokogiri_demo2.rb
+require 'nokogiri'
+require 'open-uri'
+doc = Nokogiri::HTML(open("http://rubylearning.com/"))
+
+# Search with XPath
+doc.xpath("//h2[@id='slogan']").first.content
+# output: "Helping Ruby Programmers become Awesome!"
+
+# Search with CSS3
+doc.css("#footer p strong:first-child")[0].content
+# output: "RubyLearning.com - A Ruby Tutorial"
+</pre>
+
 </div>
 </body>
 </html>
